@@ -1,5 +1,6 @@
 #!/bin/sh
 
+git pull
 cat "datasheets.csv" | while IFS="," read -r url fn desc;
 do
     lastmodified=$(curl -sI $url | grep -i Last-Modified)
@@ -23,10 +24,12 @@ if [[ $(git status -s | wc -l) -gt "0" ]]; then
 
     # update text for PDFs
     for fn in $(printf "$mod\n$new"); do
-        pdftotext $fn txt/$(basename $fn .pdf).txt
+        TXTFILE="txt/$(basename $fn .pdf).txt"
+        pdftotext "$fn" "$TXTFILE"
+        git add "$fn" "$TXTFILE"
     done
 
     git status -s
-    git add "*.pdf" "*.txt"
-    git commit -m "Datasheets updated"
+    git commit -m "Datasheet downloaded at $(date -Iminutes)"
+    git push 
 fi
