@@ -27,10 +27,12 @@ equivalent to run it periodically.
 
 ## Installation
 
-Simply `./install-timer.sh`
+Simply `./install-timer.sh` as user (not with sudo) - this will install it as a systemd timer for the current user.
 
-If you move the containing directory elsewhere, you will need to reinstall it by re-running the install script.
+If you move the containing directory elsewhere, you will need to reinstall it by simply re-running the install script.
 
-## Uninstalling the service
+## Disabling the service
 
 Run `systemctl --user disable datasheet-sync.timer`
+
+The service file and timer is located under `~/.local/share/systemd/user/` - delete if you want to
